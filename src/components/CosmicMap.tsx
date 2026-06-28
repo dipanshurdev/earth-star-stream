@@ -15,15 +15,15 @@ function makeIcon(color: string) {
   return L.divIcon({
     className: "",
     html: `<div class="event-marker" style="color:${color};background:${color}"></div>`,
-    iconSize: [14, 14],
-    iconAnchor: [7, 7],
+    iconSize: [10, 10],
+    iconAnchor: [5, 5],
   });
 }
 
 function FlyTo({ target }: { target: [number, number] | null }) {
   const map = useMap();
   useEffect(() => {
-    if (target) map.flyTo([target[1], target[0]], 5, { duration: 1.2 });
+    if (target) map.flyTo([target[1], target[0]], 4, { duration: 1.0 });
   }, [target, map]);
   return null;
 }
@@ -48,12 +48,16 @@ export function CosmicMap({ events, activeFilters, selectedId, onSelect, flyToCo
       zoom={2}
       minZoom={2}
       worldCopyJump
+      zoomControl
       style={{ height: "100%", width: "100%" }}
-      className="rounded-xl"
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>'
-        url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        attribution='&copy; OSM &copy; CARTO'
+        url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
+      />
+      <TileLayer
+        url="https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png"
+        opacity={0.55}
       />
       <FlyTo target={flyToCoord} />
       {visible.map((ev) => {
@@ -72,11 +76,13 @@ export function CosmicMap({ events, activeFilters, selectedId, onSelect, flyToCo
           >
             <Popup>
               <div className="space-y-1">
-                <div className="text-xs uppercase tracking-wider opacity-70">
+                <div className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
                   {CATEGORY_META[key].label}
                 </div>
-                <div className="font-semibold">{ev.title}</div>
-                <div className="text-xs opacity-70">{timeAgo(latestDate(ev))}</div>
+                <div className="font-medium text-foreground">{ev.title}</div>
+                <div className="text-[11px] text-muted-foreground mono-num">
+                  {timeAgo(latestDate(ev))} ago
+                </div>
               </div>
             </Popup>
           </Marker>

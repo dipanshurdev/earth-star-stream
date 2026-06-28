@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState, useCallback } from "react";
-import { Header } from "@/components/Header";
-import { CosmicMap } from "@/components/CosmicMap";
+import { useEffect, useMemo, useState, useCallback, lazy, Suspense } from "react";
+import { Sidebar } from "@/components/Sidebar";
+import { TopBar } from "@/components/TopBar";
 import { ApodGallery } from "@/components/ApodGallery";
 import { EventsFeed } from "@/components/EventsFeed";
 import { EventDetailsPanel } from "@/components/EventDetailsPanel";
@@ -14,6 +14,11 @@ import {
   latestCoord,
 } from "@/lib/nasa";
 
+// Leaflet touches `window` at import-time — load it client-only.
+const CosmicMap = lazy(() =>
+  import("@/components/CosmicMap").then((m) => ({ default: m.CosmicMap })),
+);
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -21,7 +26,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Live dashboard of Earth's natural events (wildfires, volcanoes, storms) plotted on an interactive map alongside NASA's astronomy picture of the day.",
+          "Minimal real-time dashboard tracking Earth's natural events alongside NASA's astronomy picture of the day.",
       },
       { property: "og:title", content: "Cosmic Earth Monitor" },
       {
@@ -30,6 +35,7 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
+  ssr: false,
   component: Dashboard,
 });
 
@@ -95,77 +101,106 @@ function Dashboard() {
   };
 
   return (
-    <div className="starfield min-h-screen relative">
-      <div className="relative z-10 max-w-[1600px] mx-auto p-3 sm:p-4 space-y-3 sm:space-y-4">
-        <Header
+    <div className="flex min-h-screen bg-background">
+      <Sidebar
+        query={query}
+        setQuery={setQuery}
+        filters={filters}
+        toggleFilter={toggleFilter}
+      />
+
+      <div className="flex-1 flex flex-col min-w-0">
+        <TopBar
           query={query}
           setQuery={setQuery}
           filters={filters}
           toggleFilter={toggleFilter}
           lastUpdate={lastUpdate}
+          total={searched.length}
         />
 
-        <StatsBar events={searched} />
+        <main className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6">
+          {error && (
+            <div className="surface rounded-lg px-4 py-3 text-[12.5px] text-destructive flex items-center justify-between">
+              <span>{error}</span>
+              <button
+                onClick={load}
+                className="text-[11px] uppercase tracking-[0.18em] hover:text-foreground"
+              >
+                Retry
+              </button>
+            </div>
+          )}
 
-        {error && (
-          <div className="glass rounded-xl px-4 py-3 text-sm text-destructive">
-            {error} —{" "}
-            <button onClick={load} className="underline">
-              retry
-            </button>
-          </div>
-        )}
+          <StatsBar events={searched} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-3 sm:gap-4">
-          <div className="relative h-[58vh] lg:h-[70vh] rounded-xl overflow-hidden glass">
-            {loading && (
-              <div className="absolute inset-0 grid place-items-center z-[400]">
-                <div className="text-xs text-muted-foreground animate-pulse">
-                  Scanning Earth…
+          <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_340px] gap-4 sm:gap-6">
+            {/* Map */}
+            <div className="surface rounded-lg overflow-hidden relative h-[62vh] xl:h-[68vh]">
+              {loading && (
+                <div className="absolute inset-0 grid place-items-center z-[400] bg-background/40">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground animate-pulse">
+                    Scanning Earth
+                  </div>
                 </div>
-              </div>
-            )}
-            <CosmicMap
-              events={searched}
-              activeFilters={filters}
-              selectedId={selectedId}
-              onSelect={handleSelect}
-              flyToCoord={flyTo}
-            />
-            {selected && (
-              <EventDetailsPanel event={selected} onClose={() => setSelectedId(null)} />
-            )}
+              )}
+              <Suspense fallback={<div className="w-full h-full bg-surface-2 animate-pulse" />}>
+                <CosmicMap
+                  events={searched}
+                  activeFilters={filters}
+                  selectedId={selectedId}
+                  onSelect={handleSelect}
+                  flyToCoord={flyTo}
+                />
+              </Suspense>
+              {selected && (
+                <EventDetailsPanel event={selected} onClose={() => setSelectedId(null)} />
+              )}
+            </div>
+
+            {/* Right rail */}
+            <div className="space-y-4 sm:space-y-6">
+              <ApodGallery />
+            </div>
           </div>
 
-          <div className="h-[70vh] hidden lg:block">
-            <ApodGallery />
+          <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_340px] gap-4 sm:gap-6">
+            <div className="h-[44vh]">
+              <EventsFeed
+                events={searched}
+                activeFilters={filters}
+                selectedId={selectedId}
+                onSelect={handleSelect}
+              />
+            </div>
+            <div />
           </div>
-        </div>
+        </main>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-3 sm:gap-4">
-          <div className="h-[50vh] lg:h-[40vh]">
-            <EventsFeed
-              events={searched}
-              activeFilters={filters}
-              selectedId={selectedId}
-              onSelect={handleSelect}
-            />
+        <footer className="px-4 sm:px-6 py-4 border-t border-border text-[11px] text-muted-foreground flex flex-wrap items-center gap-4 justify-between">
+          <div>
+            Data ·{" "}
+            <a
+              className="hover:text-foreground transition"
+              href="https://eonet.gsfc.nasa.gov/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              NASA EONET
+            </a>{" "}
+            ·{" "}
+            <a
+              className="hover:text-foreground transition"
+              href="https://apod.nasa.gov/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              APOD
+            </a>
           </div>
-          <div className="lg:hidden h-[60vh]">
-            <ApodGallery />
+          <div className="uppercase tracking-[0.2em] text-[10px]">
+            Cosmic Earth Monitor · v1.0
           </div>
-        </div>
-
-        <footer className="text-center text-[11px] text-muted-foreground py-4">
-          Data: NASA{" "}
-          <a className="text-cyan hover:underline" href="https://eonet.gsfc.nasa.gov/" target="_blank" rel="noreferrer">
-            EONET
-          </a>{" "}
-          ·{" "}
-          <a className="text-cyan hover:underline" href="https://apod.nasa.gov/" target="_blank" rel="noreferrer">
-            APOD
-          </a>{" "}
-          · Map tiles © CARTO & OpenStreetMap
         </footer>
       </div>
     </div>
