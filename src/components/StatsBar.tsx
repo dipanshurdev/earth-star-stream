@@ -1,23 +1,5 @@
 import { useMemo } from "react";
-import { Doughnut } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
 import { type EonetEvent, CATEGORY_META, categorizeEvent, type EventCategoryKey } from "@/lib/nasa";
-import { Activity, Flame, Wind, Snowflake, Mountain } from "lucide-react";
-
-ChartJS.register(ArcElement, Tooltip, Legend);
-
-const ICONS: Record<EventCategoryKey, typeof Activity> = {
-  volcanoes: Mountain,
-  wildfires: Flame,
-  severeStorms: Wind,
-  seaLakeIce: Snowflake,
-  other: Activity,
-};
 
 export function StatsBar({ events }: { events: EonetEvent[] }) {
   const counts = useMemo(() => {
@@ -32,57 +14,42 @@ export function StatsBar({ events }: { events: EonetEvent[] }) {
     return c;
   }, [events]);
 
+  const total = events.length || 1;
   const keys = Object.keys(CATEGORY_META) as EventCategoryKey[];
-  const data = {
-    labels: keys.map((k) => CATEGORY_META[k].label),
-    datasets: [
-      {
-        data: keys.map((k) => counts[k]),
-        backgroundColor: keys.map((k) => CATEGORY_META[k].color),
-        borderColor: "rgba(0,0,0,0)",
-        borderWidth: 2,
-      },
-    ],
-  };
 
   return (
-    <div className="glass rounded-xl p-4 grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4 items-center">
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <div className="col-span-2 md:col-span-1">
-          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Active</div>
-          <div className="font-display font-bold text-3xl text-glow text-cyan">
+    <div className="surface rounded-lg p-5">
+      <div className="grid grid-cols-2 sm:grid-cols-6 gap-5 items-end">
+        <div className="col-span-2 sm:col-span-1">
+          <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+            Active
+          </div>
+          <div className="font-display font-semibold text-4xl text-foreground mono-num leading-none mt-1">
             {events.length}
           </div>
-          <div className="text-[10px] text-muted-foreground">events worldwide</div>
+          <div className="text-[11px] text-muted-foreground mt-1">events worldwide</div>
         </div>
         {keys.map((k) => {
-          const Icon = ICONS[k];
+          const meta = CATEGORY_META[k];
+          const pct = (counts[k] / total) * 100;
           return (
-            <div key={k} className="flex items-center gap-2">
-              <div
-                className="w-8 h-8 rounded-lg grid place-items-center shrink-0"
-                style={{ background: `${CATEGORY_META[k].color}20`, color: CATEGORY_META[k].color }}
-              >
-                <Icon className="w-4 h-4" />
+            <div key={k}>
+              <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-muted-foreground mono-num">
+                <span className="w-1 h-1 rounded-full" style={{ background: meta.color }} />
+                {meta.short}
               </div>
-              <div className="min-w-0">
-                <div className="font-display font-bold text-lg leading-none">{counts[k]}</div>
-                <div className="text-[10px] text-muted-foreground truncate">
-                  {CATEGORY_META[k].label}
-                </div>
+              <div className="font-display font-semibold text-2xl mono-num mt-1 leading-none">
+                {counts[k]}
+              </div>
+              <div className="mt-2 h-0.5 bg-hairline overflow-hidden">
+                <div
+                  className="h-full transition-all duration-500"
+                  style={{ width: `${pct}%`, background: meta.color }}
+                />
               </div>
             </div>
           );
         })}
-      </div>
-      <div className="w-24 h-24 mx-auto">
-        <Doughnut
-          data={data}
-          options={{
-            plugins: { legend: { display: false }, tooltip: { enabled: true } },
-            cutout: "65%",
-          }}
-        />
       </div>
     </div>
   );

@@ -1,9 +1,6 @@
 /** NASA API helpers — EONET (natural events) and APOD (astronomy picture of the day). */
 
-export type EonetCategory = {
-  id: string;
-  title: string;
-};
+export type EonetCategory = { id: string; title: string };
 
 export type EonetGeometry = {
   date: string;
@@ -41,13 +38,18 @@ export type EventCategoryKey =
 
 export const CATEGORY_META: Record<
   EventCategoryKey,
-  { label: string; color: string; tokenVar: string; eonetIds: string[] }
+  { label: string; short: string; color: string; eonetIds: string[] }
 > = {
-  volcanoes: { label: "Volcanoes", color: "#ef4444", tokenVar: "--volcano", eonetIds: ["volcanoes"] },
-  wildfires: { label: "Wildfires", color: "#f97316", tokenVar: "--wildfire", eonetIds: ["wildfires"] },
-  severeStorms: { label: "Severe Storms", color: "#facc15", tokenVar: "--storm", eonetIds: ["severeStorms"] },
-  seaLakeIce: { label: "Sea & Lake Ice", color: "#38bdf8", tokenVar: "--ice", eonetIds: ["seaLakeIce"] },
-  other: { label: "Other", color: "#a855f7", tokenVar: "--other", eonetIds: ["drought", "dustHaze", "earthquakes", "floods", "landslides", "manmade", "snow", "tempExtremes", "waterColor"] },
+  volcanoes: { label: "Volcanoes", short: "VOLC", color: "#ef4444", eonetIds: ["volcanoes"] },
+  wildfires: { label: "Wildfires", short: "FIRE", color: "#f59e0b", eonetIds: ["wildfires"] },
+  severeStorms: { label: "Storms", short: "STRM", color: "#eab308", eonetIds: ["severeStorms"] },
+  seaLakeIce: { label: "Sea Ice", short: "ICE", color: "#60a5fa", eonetIds: ["seaLakeIce"] },
+  other: {
+    label: "Other",
+    short: "OTHR",
+    color: "#a3a3a3",
+    eonetIds: ["drought", "dustHaze", "earthquakes", "floods", "landslides", "manmade", "snow", "tempExtremes", "waterColor"],
+  },
 };
 
 export function categorizeEvent(ev: EonetEvent): EventCategoryKey {
@@ -58,13 +60,11 @@ export function categorizeEvent(ev: EonetEvent): EventCategoryKey {
   return "other";
 }
 
-/** Extract a [lng, lat] coordinate from an EONET geometry entry. */
 export function latestCoord(ev: EonetEvent): [number, number] | null {
   const g = ev.geometry[ev.geometry.length - 1];
   if (!g) return null;
   const c = g.coordinates;
   if (typeof c[0] === "number") return [c[0] as number, c[1] as number];
-  // polygon — use first point of first ring
   const first = (c as number[][])[0];
   return Array.isArray(first) ? [first[0], first[1]] : null;
 }
@@ -96,9 +96,9 @@ export function timeAgo(iso: string): string {
   if (!then) return "—";
   const diff = Date.now() - then;
   const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 60) return `${mins}m`;
   const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
+  if (hrs < 24) return `${hrs}h`;
   const days = Math.floor(hrs / 24);
-  return `${days}d ago`;
+  return `${days}d`;
 }
