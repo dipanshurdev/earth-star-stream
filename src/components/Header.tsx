@@ -53,7 +53,7 @@ export function Header({
               <button
                 key={k}
                 onClick={() => toggleFilter(k)}
-                className="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold uppercase tracking-wider transition border"
+                className="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold cursor-pointer uppercase tracking-wider transition border"
                 style={{
                   background: active ? `${m.color}25` : "transparent",
                   color: active ? m.color : "var(--color-muted-foreground)",
@@ -86,7 +86,7 @@ export function Header({
               <button
                 key={k}
                 onClick={() => toggleFilter(k)}
-                className="px-2 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider border"
+                className="px-2 cursor-pointer py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider border cursor-pointer"
                 style={{
                   background: active ? `${m.color}25` : "transparent",
                   color: active ? m.color : "var(--color-muted-foreground)",

@@ -39,7 +39,7 @@ export function ApodGallery() {
         <div className="flex">
           <button
             onClick={() => setOffset((o) => o + 1)}
-            className="p-1.5 text-muted-foreground hover:text-foreground hover:bg-secondary transition border border-hairline rounded-l-md"
+            className="p-1.5 text-muted-foreground hover:text-foreground hover:bg-secondary transition border border-hairline rounded-l-md cursor-pointer"
             aria-label="Previous"
           >
             <ChevronLeft className="w-3.5 h-3.5" />
@@ -47,7 +47,7 @@ export function ApodGallery() {
           <button
             onClick={() => setOffset((o) => Math.max(0, o - 1))}
             disabled={offset === 0}
-            className="p-1.5 text-muted-foreground hover:text-foreground hover:bg-secondary transition border border-l-0 border-hairline rounded-r-md disabled:opacity-30 disabled:hover:bg-transparent"
+            className="cursor-pointer p-1.5 text-muted-foreground hover:text-foreground hover:bg-secondary transition border border-l-0 border-hairline rounded-r-md disabled:opacity-30 disabled:hover:bg-transparent"
             aria-label="Next"
           >
             <ChevronRight className="w-3.5 h-3.5" />

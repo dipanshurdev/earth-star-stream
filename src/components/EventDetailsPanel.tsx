@@ -32,7 +32,7 @@ export function EventDetailsPanel({
     <div className="absolute right-4 top-4 bottom-4 w-[320px] max-w-[calc(100%-2rem)] surface rounded-lg p-5 flex flex-col z-[500] shadow-2xl">
       <button
         onClick={onClose}
-        className="absolute top-3 right-3 p-1.5 text-muted-foreground hover:text-foreground transition"
+        className="absolute top-3 right-3 p-1.5 text-muted-foreground cursor-pointer hover:text-foreground transition"
         aria-label="Close"
       >
         <X className="w-4 h-4" />
@@ -94,7 +94,7 @@ export function EventDetailsPanel({
           href={event.link}
           target="_blank"
           rel="noreferrer"
-          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition cursor-pointer"
         >
           <ExternalLink className="w-3.5 h-3.5" />
           Learn more

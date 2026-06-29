@@ -66,7 +66,7 @@ export function Sidebar({
             <button
               key={item.id}
               onClick={() => scrollToId(item.id)}
-              className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded text-[13px] text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition"
+              className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded text-[13px] text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition cursor-pointer"
             >
               <Icon className="w-3.5 h-3.5" strokeWidth={2} />
               {item.label}

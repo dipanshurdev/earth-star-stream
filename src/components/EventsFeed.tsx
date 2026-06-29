@@ -53,7 +53,7 @@ export function EventsFeed({
               <li key={ev.id}>
                 <button
                   onClick={() => onSelect(ev)}
-                  className={`w-full text-left px-4 py-3 hover:bg-secondary transition flex gap-3 items-start border-l-2 ${
+                  className={`w-full cursor-pointer text-left px-4 py-3 hover:bg-secondary transition flex gap-3 items-start border-l-2 ${
                     active ? "bg-secondary border-primary" : "border-transparent"
                   }`}
                 >
