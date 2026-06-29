@@ -198,6 +198,11 @@ function Dashboard() {
               APOD
             </a>
           </div>
+           <div className="uppercase tracking-[0.2em] text-[10px]">
+            A thaught of <span className="text-blue-700">
+              <a target="_blank" rel="noreferrer" href="https://linkedin.com/in/dipanshurdev">Dipanshu Rawat</a>
+            </span>
+          </div>
           <div className="uppercase tracking-[0.2em] text-[10px]">
             Cosmic Earth Monitor · v1.0
           </div>
