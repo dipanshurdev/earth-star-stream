@@ -1,13 +1,16 @@
-import { Globe, Activity, Layers, Image as ImageIcon, Info, Search } from "lucide-react";
+import { Globe, Activity, Image as ImageIcon, Search } from "lucide-react";
 import { type EventCategoryKey, CATEGORY_META } from "@/lib/nasa";
 
 const NAV = [
-  { id: "map", label: "Map", icon: Globe },
-  { id: "events", label: "Events", icon: Activity },
-  { id: "gallery", label: "Gallery", icon: ImageIcon },
-  { id: "layers", label: "Layers", icon: Layers },
-  { id: "about", label: "About", icon: Info },
+  { id: "map", label: "Live Map", icon: Globe },
+  { id: "events", label: "Events Feed", icon: Activity },
+  { id: "gallery", label: "APOD Gallery", icon: ImageIcon },
 ];
+
+function scrollToId(id: string) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
 export function Sidebar({
   query,
