@@ -30,8 +30,9 @@ export function Sidebar({
       {/* Brand */}
       <div className="px-5 py-5 border-b border-hairline">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded grid place-items-center bg-primary">
-            <Globe className="w-3.5 h-3.5 text-primary-foreground" strokeWidth={2.5} />
+          <div className="w-10 rounded grid place-items-center">
+            {/* <Globe className="w-3.5 h-3.5 text-primary-foreground" strokeWidth={2.5} /> */}
+            <img className="w-full rounded-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo19f1Gjo2QimKoHJKD9bGYuH3QeMEzmZz5lJNY6x4dLasW0iS0bvihYY&s=10" alt="logo" />
           </div>
           <div>
             <div className="font-display font-semibold text-[15px] leading-none">Cosmic</div>
