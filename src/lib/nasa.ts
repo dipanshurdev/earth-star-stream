@@ -1,5 +1,11 @@
 /** NASA API helpers — EONET (natural events) and APOD (astronomy picture of the day). */
 
+import type { IconType } from "react-icons";
+import { FaVolcano } from "react-icons/fa6";
+import { GiWildfires, GiThermometerCold } from "react-icons/gi";
+import { WiStormShowers } from "react-icons/wi";
+import { GrMore } from "react-icons/gr";
+
 export type EonetCategory = { id: string; title: string };
 
 export type EonetGeometry = {
@@ -29,27 +35,56 @@ export type ApodImage = {
   copyright?: string;
 };
 
-export type EventCategoryKey =
-  | "volcanoes"
-  | "wildfires"
-  | "severeStorms"
-  | "seaLakeIce"
-  | "other";
+export type EventCategoryKey = "volcanoes" | "wildfires" | "severeStorms" | "seaLakeIce" | "other";
 
 export const CATEGORY_META: Record<
   EventCategoryKey,
-  { label: string; short: string; color: string; logo: string; eonetIds: string[] }
+  { label: string; short: string; color: string; icon: IconType; eonetIds: string[] }
 > = {
-  volcanoes: { label: "Volcanoes", short: "VOLC", logo: "FaVolcano ", color: "#ef4444", eonetIds: ["volcanoes"] },
-  wildfires: { label: "Wildfires", short: "FIRE", logo: "GiWildfires", color: "#f59e0b", eonetIds: ["wildfires"] },
-  severeStorms: { label: "Storms", short: "STRM", logo: "WiStormShowers", color: "#eab308", eonetIds: ["severeStorms"] },
-  seaLakeIce: { label: "Sea Ice", short: "ICE", logo: "GiThermometerCold", color: "#60a5fa", eonetIds: ["seaLakeIce"] },
+  volcanoes: {
+    label: "Volcanoes",
+    short: "VOLC",
+    color: "#ef4444",
+    icon: FaVolcano,
+    eonetIds: ["volcanoes"],
+  },
+  wildfires: {
+    label: "Wildfires",
+    short: "FIRE",
+    color: "#f59e0b",
+    icon: GiWildfires,
+    eonetIds: ["wildfires"],
+  },
+  severeStorms: {
+    label: "Storms",
+    short: "STRM",
+    color: "#eab308",
+    icon: WiStormShowers,
+    eonetIds: ["severeStorms"],
+  },
+  seaLakeIce: {
+    label: "Sea Ice",
+    short: "ICE",
+    color: "#60a5fa",
+    icon: GiThermometerCold,
+    eonetIds: ["seaLakeIce"],
+  },
   other: {
     label: "Other",
     short: "OTHR",
     color: "#a3a3a3",
-    logo: "GrMore",
-    eonetIds: ["drought", "dustHaze", "earthquakes", "floods", "landslides", "manmade", "snow", "tempExtremes", "waterColor"],
+    icon: GrMore,
+    eonetIds: [
+      "drought",
+      "dustHaze",
+      "earthquakes",
+      "floods",
+      "landslides",
+      "manmade",
+      "snow",
+      "tempExtremes",
+      "waterColor",
+    ],
   },
 };
 
