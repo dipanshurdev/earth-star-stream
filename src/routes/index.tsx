@@ -134,7 +134,7 @@ function Dashboard() {
 
           <StatsBar events={searched} />
 
-          <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_340px] gap-4 sm:gap-6">
+          <div id="map" className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_340px] gap-4 sm:gap-6 scroll-mt-20">
             {/* Map */}
             <div className="surface rounded-lg overflow-hidden relative h-[62vh] xl:h-[68vh]">
               {loading && (
@@ -159,13 +159,13 @@ function Dashboard() {
             </div>
 
             {/* Right rail */}
-            <div className="space-y-4 sm:space-y-6">
+            <div id="gallery" className="space-y-4 sm:space-y-6 scroll-mt-20">
               <ApodGallery />
             </div>
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_340px] gap-4 sm:gap-6">
-            <div className="h-[44vh]">
+            <div id="events" className="h-[44vh] scroll-mt-20">
               <EventsFeed
                 events={searched}
                 activeFilters={filters}

@@ -1,13 +1,16 @@
-import { Globe, Activity, Layers, Image as ImageIcon, Info, Search } from "lucide-react";
+import { Globe, Activity, Image as ImageIcon, Search } from "lucide-react";
 import { type EventCategoryKey, CATEGORY_META } from "@/lib/nasa";
 
 const NAV = [
-  { id: "map", label: "Map", icon: Globe },
-  { id: "events", label: "Events", icon: Activity },
-  { id: "gallery", label: "Gallery", icon: ImageIcon },
-  { id: "layers", label: "Layers", icon: Layers },
-  { id: "about", label: "About", icon: Info },
+  { id: "map", label: "Live Map", icon: Globe },
+  { id: "events", label: "Events Feed", icon: Activity },
+  { id: "gallery", label: "APOD Gallery", icon: ImageIcon },
 ];
+
+function scrollToId(id: string) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
 export function Sidebar({
   query,
@@ -57,17 +60,13 @@ export function Sidebar({
         <div className="px-3 mb-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
           Workspace
         </div>
-        {NAV.map((item, i) => {
+        {NAV.map((item) => {
           const Icon = item.icon;
-          const active = i === 0;
           return (
             <button
               key={item.id}
-              className={`w-full flex items-center gap-2.5 px-3 py-1.5 rounded text-[13px] transition ${
-                active
-                  ? "bg-secondary text-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
-              }`}
+              onClick={() => scrollToId(item.id)}
+              className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded text-[13px] text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition"
             >
               <Icon className="w-3.5 h-3.5" strokeWidth={2} />
               {item.label}
