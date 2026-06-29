@@ -125,7 +125,7 @@ function Dashboard() {
               <span>{error}</span>
               <button
                 onClick={load}
-                className="text-[11px] uppercase tracking-[0.18em] hover:text-foreground"
+                className="text-[11px] uppercase tracking-[0.18em] hover:text-foreground cursor-pointer"
               >
                 Retry
               </button>

@@ -38,16 +38,17 @@ export type EventCategoryKey =
 
 export const CATEGORY_META: Record<
   EventCategoryKey,
-  { label: string; short: string; color: string; eonetIds: string[] }
+  { label: string; short: string; color: string; logo: string; eonetIds: string[] }
 > = {
-  volcanoes: { label: "Volcanoes", short: "VOLC", color: "#ef4444", eonetIds: ["volcanoes"] },
-  wildfires: { label: "Wildfires", short: "FIRE", color: "#f59e0b", eonetIds: ["wildfires"] },
-  severeStorms: { label: "Storms", short: "STRM", color: "#eab308", eonetIds: ["severeStorms"] },
-  seaLakeIce: { label: "Sea Ice", short: "ICE", color: "#60a5fa", eonetIds: ["seaLakeIce"] },
+  volcanoes: { label: "Volcanoes", short: "VOLC", logo: "FaVolcano ", color: "#ef4444", eonetIds: ["volcanoes"] },
+  wildfires: { label: "Wildfires", short: "FIRE", logo: "GiWildfires", color: "#f59e0b", eonetIds: ["wildfires"] },
+  severeStorms: { label: "Storms", short: "STRM", logo: "WiStormShowers", color: "#eab308", eonetIds: ["severeStorms"] },
+  seaLakeIce: { label: "Sea Ice", short: "ICE", logo: "GiThermometerCold", color: "#60a5fa", eonetIds: ["seaLakeIce"] },
   other: {
     label: "Other",
     short: "OTHR",
     color: "#a3a3a3",
+    logo: "GrMore",
     eonetIds: ["drought", "dustHaze", "earthquakes", "floods", "landslides", "manmade", "snow", "tempExtremes", "waterColor"],
   },
 };

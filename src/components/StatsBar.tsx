@@ -10,12 +10,15 @@ export function StatsBar({ events }: { events: EonetEvent[] }) {
       seaLakeIce: 0,
       other: 0,
     };
+
+    
     for (const ev of events) c[categorizeEvent(ev)]++;
     return c;
   }, [events]);
 
   const total = events.length || 1;
   const keys = Object.keys(CATEGORY_META) as EventCategoryKey[];
+  
 
   return (
     <div className="surface rounded-lg p-5">
@@ -32,11 +35,14 @@ export function StatsBar({ events }: { events: EonetEvent[] }) {
         {keys.map((k) => {
           const meta = CATEGORY_META[k];
           const pct = (counts[k] / total) * 100;
+          const {color, label, logo, short} = meta 
           return (
             <div key={k}>
               <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-muted-foreground mono-num">
                 <span className="w-1 h-1 rounded-full" style={{ background: meta.color }} />
-                {meta.short}
+                {short}
+                
+             
               </div>
               <div className="font-display font-semibold text-2xl mono-num mt-1 leading-none">
                 {counts[k]}

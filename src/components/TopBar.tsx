@@ -60,8 +60,11 @@ export function TopBar({
 
         {/* Last update */}
         <div className="hidden sm:flex items-center gap-1.5 text-[10.5px] uppercase tracking-[0.18em] text-muted-foreground mono-num">
-          <Radio className="w-3 h-3" />
+          <Radio className="w-5 h-5 text-primary animate-pulse" />
+          <span className="text-[15px]">
+
           {lastUpdate ? lastUpdate.toLocaleTimeString() : "—"}
+          </span>
         </div>
       </div>
 
