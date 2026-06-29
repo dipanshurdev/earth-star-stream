@@ -21,9 +21,7 @@ export function StatsBar({ events }: { events: EonetEvent[] }) {
     <div className="surface rounded-lg p-5">
       <div className="grid grid-cols-2 sm:grid-cols-6 gap-5 items-end">
         <div className="col-span-2 sm:col-span-1">
-          <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            Active
-          </div>
+          <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Active</div>
           <div className="font-display font-semibold text-4xl text-foreground mono-num leading-none mt-1">
             {events.length}
           </div>
@@ -31,11 +29,12 @@ export function StatsBar({ events }: { events: EonetEvent[] }) {
         </div>
         {keys.map((k) => {
           const meta = CATEGORY_META[k];
+          const Icon = meta.icon;
           const pct = (counts[k] / total) * 100;
           return (
             <div key={k}>
               <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-muted-foreground mono-num">
-                <span className="w-1 h-1 rounded-full" style={{ background: meta.color }} />
+                <Icon className="w-3.5 h-3.5" style={{ color: meta.color }} aria-hidden />
                 {meta.short}
               </div>
               <div className="font-display font-semibold text-2xl mono-num mt-1 leading-none">
