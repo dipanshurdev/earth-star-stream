@@ -77,7 +77,7 @@ export function Sidebar({
       </nav>
 
       {/* Filters */}
-      <div className="px-4 py-3 border-t border-hairline mt-auto">
+      <div className="px-4 py-3 border-t border-hairline mt-[90%]">
         <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-3">
           Event Layers
         </div>

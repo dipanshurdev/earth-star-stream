@@ -28,6 +28,8 @@ export function EventDetailsPanel({
     setTimeout(() => setCopied(false), 1800);
   };
 
+  
+
   return (
     <div className="absolute right-4 top-4 bottom-4 w-[320px] max-w-[calc(100%-2rem)] surface rounded-lg p-5 flex flex-col z-[500] shadow-2xl">
       <button
@@ -91,7 +93,7 @@ export function EventDetailsPanel({
 
       <div className="mt-auto pt-4 flex gap-2">
         <a
-          href={event.link}
+          href={event.sources[0]?.url}
           target="_blank"
           rel="noreferrer"
           className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded bg-primary text-primary-foreground text-[12px] font-medium hover:opacity-90 transition cursor-pointer"
